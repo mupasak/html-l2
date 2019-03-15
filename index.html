@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html>
+   <head>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+      <style>
+         .move{
+         position: absolute;
+         height: 110px;
+         width: 110px;
+         padding: 10%;
+         }
+         body {
+         background-color: rgb(0, 0, 0);
+         }
+		 .heading{
+		 font-family: 'Open Sans', sans-serif;
+         color: white;
+         text-transform: uppercase;
+         font-size: 80px;
+         font-weight: 800;
+         letter-spacing: -3px;
+         line-height: 1;
+         text-shadow: #EDEDED 3px 2px 0;
+         position: relative;
+		 }
+         #locate {
+         color: chartuese;
+         font-family: Monospace;
+         margin: 12px 0px 0px 12px;
+         border-left: 0px solid #eee;
+         padding: 1%;
+         }
+		 #background {
+         width: 100%;
+         height: 100%;
+         background-color: black;
+         margin: 0px;
+         padding: 0px;
+         }
+         *{
+         color: rgb(235,235,235);
+         }
+         
+      </style>
+      <script>
+         function drag(ev) {
+           ev.dataTransfer.setData("text", ev.target.id);
+         }
+         
+		 function allowDrop(ev) {
+           ev.preventDefault();
+         }
+         
+         function drop(ev) {
+           ev.preventDefault();
+           var data = ev.dataTransfer.getData("text");
+           ev.target.appendChild(document.getElementById(data));
+         
+         }
+      </script>
+   </head>
+   <body onload="getCoord()">
+      <div class="container-fluid" >
+         <h1 id= "heading">
+            <center>HTML 5 Drag and Drop, Geolocation, SVG, WebStorage and Elements</center><br>
+         </h1>
+         <p>
+         <h4>Task-1</h4>
+         Draw two circles of color yellow and green using SVG and allow users to drag and drop a logo (using any
+         gif image) into the circles.  
+         </p>
+         <div class="row">
+            <div class="col-md-3" >
+               <div class="move" id="one" ondrop="drop(event)" ondragover="allowDrop(event)">
+               </div>
+               <svg  width="150" height="150" >
+                  <circle cx="60" cy="60" r="42" fill="yellow" />
+               </svg>
+            </div>
+            <div class="col-md-3" >
+               <div class="move" id="div2" ondrop="drop(event)" ondragover="allowDrop(event)">
+               </div>
+               <svg  width="150" height="150" >
+                  <circle cx="60" cy="60" r="42" fill="green" />
+               </svg>
+            </div>
+            <img src="test.gif" id="drag1"  draggable="true" ondragstart="drag(event)" width="52" height="52">
+         </div>
+         <div class="row" id = "background">
+            <p>
+            <h4>Task-2</h4>
+            Find the current location of users using geolocation api and save it to web storage.			
+            </p>
+			<br>
+            <div id = "locationArea">
+               <button onclick="getGeoLocation()" class="btn-success btn">Locate me</button>
+               <p id = "locate">
+               </p>
+            </div>
+         </div>
+      </div>
+      <script>
+         var x = document.getElementById("locate");
+         
+         function getGeoLocationLocation() {
+           if (navigator.geolocation) {
+             x.innerHTML = "<a style='color:yellow'>Locating you...</a>"
+             navigator.geolocation.getCurrentPosition(showPosition);
+           } else { 
+             x.innerHTML = "Geolocation is not supported by this browser.";
+           }
+         }
+         
+         function showPosition(position) {
+           x.innerHTML = "Latitude: " + position.coords.latitude + 
+           "<br>Longitude: " + position.coords.longitude + "<br><a style='color:chartreuse'>Saved to Web-Storage</a>"
+           localStorage.setItem("latitude", position.coords.latitude);
+           localStorage.setItem("longitude", position.coords.longitude)
+         }
+         function getCoord(){
+           x.innerHTML = "<a style='color:chartreuse'>Retrieved from Web-Storage</a>"+"<br>Latitude: " + localStorage.latitude + 
+           "<br>Longitude: " + localStorage.longitude 
+         }
+      </script>
+   </body>
+</html>
